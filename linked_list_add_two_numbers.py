@@ -16,6 +16,9 @@ class Solution:
     def addTwoNumbers(
         self, l1: Optional[ListNode], l2: Optional[ListNode], carry: int = 0
     ) -> Optional[ListNode]:
+        assert isinstance(l1, ListNode)
+        assert isinstance(l2, ListNode)
+
         return ListNode()  # added to keep Pylance at bay.
 
 
