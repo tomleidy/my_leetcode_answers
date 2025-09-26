@@ -3,6 +3,7 @@ import json
 from typing import Optional
 import time
 
+# https://leetcode.com/problems/add-two-numbers/submissions/1783642979/
 # pylint:disable=C0103,R0903,W0613
 
 
@@ -18,28 +19,24 @@ class Solution:
         self, l1: Optional[ListNode], l2: Optional[ListNode]
     ) -> Optional[ListNode]:
         # value summing
-        carry = 0
-        v_sum = 0
-        nexts = []
-        for x in [l1, l2]:
-            nexts.append(getattr(x, "next", None))
-            val = getattr(x, "val", 0)
-            if val:
-                v_sum += val
+        next_1 = getattr(l1, "next", None)
+        next_2 = getattr(l2, "next", None)
+        v_sum = getattr(l1, "val", 0) + getattr(l2, "val", 0)
 
         # carrying math
+        carry = 0
         if v_sum > 9:
             carry = int(v_sum / 10)
             v_sum = v_sum % 10
 
-        # recursion paths
-        if nexts[0] or nexts[1]:
+        # recursion
+        if next_1 or next_2:
             if carry > 0:
-                if nexts[0]:
-                    nexts[0].val += carry
+                if next_1:
+                    l1.next.val += carry
                 else:
-                    nexts[1].val += carry
-            return ListNode(v_sum, self.addTwoNumbers(nexts[0], nexts[1]))
+                    l2.next.val += carry
+            return ListNode(v_sum, self.addTwoNumbers(next_1, next_2))
         if carry > 0:
             return ListNode(v_sum, ListNode(carry))
         return ListNode(v_sum)
