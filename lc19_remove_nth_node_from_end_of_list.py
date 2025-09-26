@@ -2,6 +2,7 @@ import re
 import json
 from typing import Optional
 import time
+import sys
 
 # pylint:disable=C0103,R0903,W0613
 
@@ -64,22 +65,26 @@ if __name__ == "__main__":
     solution = Solution()
 
     round_times = []
-    for i, c in enumerate(cases.values()):
-        h_list = make_list(c[0])
-        n_value = c[1]
-        expect = make_list(c[2])
-        start = time.perf_counter()
-        result = solution.removeNthFromEnd(h_list, n_value)
-        end = time.perf_counter()
-        round_times.append(end - start)
-        print(f"Test {i}:", pass_not_pass(result, expect))
+    try:
+        for i, c in enumerate(cases.values()):
+            h_list = make_list(c[0])
+            n_value = c[1]
+            expect = make_list(c[2])
+            start = time.perf_counter()
+            result = solution.removeNthFromEnd(h_list, n_value)
+            end = time.perf_counter()
+            round_times.append(end - start)
+            print(f"Test {i}:", pass_not_pass(result, expect))
 
-        # i1 = get_listnode_as_str(l1_test)
-        # i2 = get_listnode_as_str(l2_test)
-        # print(f"{i1=}\n{i2=}")
+            # i1 = get_listnode_as_str(l1_test)
+            # i2 = get_listnode_as_str(l2_test)
+            # print(f"{i1=}\n{i2=}")
 
-        # r = get_listnode_as_str(result)
-        # e = get_listnode_as_str(expect)
-        # print(f"{r=}\n{e=}\n")
+            e = get_listnode_as_str(expect)
+            r = get_listnode_as_str(result)
+            print(f"{r=}\n{e=}\n")
 
-    print(f"Total time: {sum(round_times)} seconds\n")
+        print(f"Total time: {sum(round_times)} seconds\n")
+    except KeyboardInterrupt:
+        print()
+        sys.exit(1)
