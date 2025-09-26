@@ -1,6 +1,7 @@
 import re
 import json
-from typing import Optional, List
+from typing import Optional
+import time
 
 # pylint:disable=C0103,R0903,W0613
 
@@ -17,33 +18,31 @@ class Solution:
         self, l1: Optional[ListNode], l2: Optional[ListNode]
     ) -> Optional[ListNode]:
         # value summing
+        carry = 0
         v_sum = 0
+        nexts = []
         for x in [l1, l2]:
+            nexts.append(getattr(x, "next", None))
             val = getattr(x, "val", 0)
             if val:
                 v_sum += val
 
         # carrying math
         if v_sum > 9:
-            value = v_sum % 10
             carry = int(v_sum / 10)
-        else:
-            value = v_sum
-            carry = 0
+            v_sum = v_sum % 10
 
-        nexts = [getattr(x, "next", None) for x in [l1, l2]]
-        for n in nexts:
-            if n:
-                n.val += carry
-                break
-        # recursion
-        nodes_left = any(getattr(x, "next", False) for x in [l1, l2])
-        if nodes_left:
-            return ListNode(value, self.addTwoNumbers(*nexts))
+        # recursion paths
+        if nexts[0] or nexts[1]:
+            if carry > 0:
+                if nexts[0]:
+                    nexts[0].val += carry
+                else:
+                    nexts[1].val += carry
+            return ListNode(v_sum, self.addTwoNumbers(nexts[0], nexts[1]))
         if carry > 0:
-            return ListNode(value, ListNode(carry))
-
-        return ListNode(value)
+            return ListNode(v_sum, ListNode(carry))
+        return ListNode(v_sum)
 
 
 if __name__ == "__main__":
@@ -84,16 +83,22 @@ if __name__ == "__main__":
         ],
     }
     solution = Solution()
+    all_start = time.perf_counter()
     for c in cases.values():
         l1_test = make_list(c[0])
         l2_test = make_list(c[1])
-        assert isinstance(l1_test, ListNode)
+        # assert isinstance(l1_test, ListNode)
         expect = make_list(c[2])
+        start = time.perf_counter()
         result = solution.addTwoNumbers(l1_test, l2_test)
-        print(lists_are_equal(result, expect))
-        i1 = get_listnode_as_str(l1_test)
-        i2 = get_listnode_as_str(l2_test)
-        r = get_listnode_as_str(result)
-        e = get_listnode_as_str(expect)
-        print(f"{i1=}\n{i2=}")
-        print(f"{r=}\n{e=}\n")
+        end = time.perf_counter()
+        # print(lists_are_equal(result, expect))
+        # print(f"Loop time: {end - start} seconds\n")
+        # i1 = get_listnode_as_str(l1_test)
+        # i2 = get_listnode_as_str(l2_test)
+        # r = get_listnode_as_str(result)
+        # e = get_listnode_as_str(expect)
+        # print(f"{i1=}\n{i2=}")
+        # print(f"{r=}\n{e=}\n")
+    all_end = time.perf_counter()
+    print(f"Total time: {all_end - all_start} seconds\n")
