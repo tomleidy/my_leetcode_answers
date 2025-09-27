@@ -14,9 +14,26 @@ class ListNode:
         self.next = next
 
 
+# https://leetcode.com/problems/remove-nth-node-from-end-of-list/submissions/1784636681/
+# Computation: O(n)
+# Memory: O(n)
+
+
 class Solution:
     def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
-        pass
+        nodes = []  # the space inefficient approach
+        ptr = head
+        while ptr:
+            nodes.append(ptr)
+            ptr = getattr(ptr, "next", None)
+        idx_to_rm = len(nodes) - n
+        if idx_to_rm < 0:
+            return None  # so apparently None == [] in LeetCode linked list tests
+        if head and idx_to_rm == 0:
+            return head.next
+        idx_to_edit = idx_to_rm - 1
+        nodes[idx_to_edit].next = nodes[idx_to_rm].next
+        return head
 
 
 if __name__ == "__main__":
