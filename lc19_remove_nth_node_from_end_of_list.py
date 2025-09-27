@@ -54,7 +54,7 @@ if __name__ == "__main__":
         """Wrapper for lists_are_equal() for testing output"""
         if lists_are_equal(l1, l2):
             return "Pass"
-        return "NOT PASSING"
+        return "ERROR"
 
     # Test cases, each sublist is [head, n, expected]
     cases = {
@@ -74,15 +74,14 @@ if __name__ == "__main__":
             result = solution.removeNthFromEnd(h_list, n_value)
             end = time.perf_counter()
             round_times.append(end - start)
-            print(f"Test {i}:", pass_not_pass(result, expect))
-
-            # i1 = get_listnode_as_str(l1_test)
-            # i2 = get_listnode_as_str(l2_test)
-            # print(f"{i1=}\n{i2=}")
 
             e = get_listnode_as_str(expect)
             r = get_listnode_as_str(result)
-            print(f"{r=}\n{e=}\n")
+            print(
+                f"Test {i}:",
+                pass_not_pass(result, expect),
+                f"(result: {r}, expected: {e})",
+            )
 
         print(f"Total time: {sum(round_times)} seconds\n")
     except KeyboardInterrupt:
