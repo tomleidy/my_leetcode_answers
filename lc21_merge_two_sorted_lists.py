@@ -14,11 +14,56 @@ class ListNode:
         self.next = next
 
 
+# https://leetcode.com/problems/merge-two-sorted-lists/post-solution/?submissionId=1784671320
+# Computation: O(n)
+# Memory: O(n)
+
+
 class Solution:
     def mergeTwoLists(
         self, list1: Optional[ListNode], list2: Optional[ListNode]
     ) -> Optional[ListNode]:
-        pass
+        if not list1 and not list2:
+            return None
+        next1 = getattr(list1, "next", None)
+        next2 = getattr(list2, "next", None)
+        if not list1:
+            return ListNode(
+                list2.val,
+                self.mergeTwoLists(next1, next2),
+            )
+        if not list2:
+            return ListNode(
+                list1.val,
+                self.mergeTwoLists(next1, next2),
+            )
+
+        if list1.val == list2.val:
+            return ListNode(
+                list1.val,
+                ListNode(
+                    list2.val,
+                    self.mergeTwoLists(next1, next2),
+                ),
+            )
+        if next1 and next2:  # a look-ahead branch to game
+            peek1 = next1.val
+            peek2 = next2.val
+            if list1.val < list2.val:
+                if list2.val < peek1:
+                    return ListNode(
+                        list1.val, ListNode(list2.val, self.mergeTwoLists(next1, next2))
+                    )
+                return ListNode(list1.val, self.mergeTwoLists(next1, list2))
+            if list1.val < peek2:
+                return ListNode(
+                    list2.val, ListNode(list1.val, self.mergeTwoLists(next1, next2))
+                )
+            return ListNode(list2.val, self.mergeTwoLists(list1, next2))
+        # no look-ahead
+        if list1.val < list2.val:
+            return ListNode(list1.val, self.mergeTwoLists(next1, list2))
+        return ListNode(list2.val, self.mergeTwoLists(list1, next2))
 
 
 if __name__ == "__main__":
