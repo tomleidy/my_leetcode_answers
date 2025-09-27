@@ -21,7 +21,7 @@ class Solution:
 
 if __name__ == "__main__":
 
-    def get_listnode_as_str(node: ListNode) -> str:
+    def get_listnode_as_str(node: ListNode | None) -> str:
         """Get ListNode values as a string resembling a list"""
         values = []
         current = node
